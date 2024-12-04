@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('rc-tests', () =>{ 
+test.describe('rc-suite1', () =>{ 
   
       test.beforeEach(async ({page}) => {
 
