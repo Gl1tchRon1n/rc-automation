@@ -1,7 +1,5 @@
 import { defineConfig, devices } from '@playwright/test';
 
-test.setTimeout(30000);
-
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
@@ -14,6 +12,9 @@ test.setTimeout(30000);
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
+  use: {
+    headless: true,  // Ensure headless mode
+  },
   testDir: './tests',
   /* Run tests in files in parallel */
   fullyParallel: true,
