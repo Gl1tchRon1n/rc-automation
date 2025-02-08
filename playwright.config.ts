@@ -1,5 +1,7 @@
 import { defineConfig, devices } from '@playwright/test';
 
+test.setTimeout(30000);
+
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv

@@ -1,5 +1,7 @@
 import { test, expect } from '@playwright/test';
 
+test.setTimeout(30000);
+
 test.describe('rc_challenges', () =>{ 
   
       test.beforeEach(async ({page}) => {
