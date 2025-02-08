@@ -45,8 +45,33 @@ test.describe('rc_challenges', () =>{
 
     // Step 6: Assert that "Option 2" is selected
     await expect(dropdownMenu).toHaveValue("2"); // Assuming "2" is the value attribute for Option 2
-
-
     })
 
+test('javascript alert buttons', async({page}) =>{
+    await page.getByRole('link', {name: 'JavaScript Alerts'}).click()
+
+    // Click the button
+    await page.getByRole('button',{name: 'Click for JS Alert'}).click()
+
+    // Give a short wait to ensure the page registers the button click
+    await page.waitForTimeout(100); 
+
+    //dialog is an event handler. 
+    page.once('dialog', async (dialog) => {
+        console.log(`Dialog message: ${dialog.message()}`); // Log message for debugging
+        await dialog.accept(); // Accept the alert
+    });
+
+    // Verify the result text is updated
+    
+    await expect(page.locator('#result')).toHaveText('You successfully clicked an alert');
+    
+    
+    //await page.getByRole('button',{name: 'Click for JS Confirm'}).click()
+
+
+    //await page.getByRole('button',{name: 'Click for JS Prompt'}).click()
+
+
+}) 
 })
