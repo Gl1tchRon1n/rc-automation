@@ -54,7 +54,7 @@ test('javascript alert buttons', async({page}) =>{
     await page.getByRole('button',{name: 'Click for JS Alert'}).click()
 
     // Give a short wait to ensure the page registers the button click
-    await page.waitForTimeout(100); 
+    await page.waitForTimeout(500); 
 
     //dialog is an event handler. 
     page.once('dialog', async (dialog) => {
@@ -63,7 +63,6 @@ test('javascript alert buttons', async({page}) =>{
     });
 
     // Verify the result text is updated
-    
     await expect(page.locator('#result')).toHaveText('You successfully clicked an alert');
     
     
