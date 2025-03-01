@@ -6,7 +6,6 @@ test.setTimeout(30000);
 // Dropdown X
 // Checkboxes X
 // Input Field X
-// Radio Buttons
 // Sliders
 // File Upload
 // Date Picker
@@ -55,6 +54,22 @@ test.describe('ui elements', () =>{
 
         await expect(page.locator('h2')).toHaveText('Secure Area');
 })
+
+    test('slider', async({page})=>{
+        await page.getByRole('link', {name: "Horizontal Slider"}).click()
+
+        const sliderValue = page.locator('input[type="range"]');
+
+        await sliderValue.fill('0');  
+        await expect(sliderValue).toHaveValue('0'); 
+        
+        await sliderValue.fill('2.5');  
+        await expect(sliderValue).toHaveValue('2.5');
+
+        await sliderValue.fill('5');  
+        await expect(sliderValue).toHaveValue('5'); 
+    });
+
 
 
     test('basic auth', async ({page}) =>{
