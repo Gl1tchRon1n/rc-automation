@@ -2,7 +2,17 @@ import { test, expect } from '@playwright/test';
 
 test.setTimeout(30000);
 
-test.describe('rc_challenges', () =>{ 
+//TESTS TO BE DONE
+// Dropdown X
+// Checkboxes X
+// Input Field X
+// Radio Buttons
+// Sliders
+// File Upload
+// Date Picker
+// Tooltips
+
+test.describe('ui elements', () =>{ 
   
       test.beforeEach(async ({page}) => {
 
@@ -10,6 +20,42 @@ test.describe('rc_challenges', () =>{
 
       
     })
+
+    test('checkboxes', async({page}) =>{
+        await page.getByRole('link', {name: "Checkboxes"}).click()
+
+        // Locate the first checkbox explicitly by index
+        const firstCheckbox = (await page.locator('#checkboxes input').nth(0));
+        const secondCheckbox = (await page.locator('#checkboxes input').nth(1));
+
+        // Check first checkbox
+        await firstCheckbox.check({ force: true });
+
+        // Uncheck second checkbox (if needed)
+        await secondCheckbox.uncheck({ force: true });
+
+        // Assert that the first checkbox is checked
+        await expect(firstCheckbox).toBeChecked();
+        await expect(secondCheckbox).not.toBeChecked();
+        
+});
+
+    
+    
+    test('input field', async({page})=>{
+        await page.getByText('Form Authentication').click();
+    
+        const username = page.locator('#username');
+        const password = page.locator('#password');
+        const submit = page.locator('button[type="submit"]');
+
+        await username.fill('tomsmith');
+        await password.fill('SuperSecretPassword!');
+        await submit.click();
+
+        await expect(page.locator('h2')).toHaveText('Secure Area');
+})
+
 
     test('basic auth', async ({page}) =>{
 
@@ -49,30 +95,5 @@ test.describe('rc_challenges', () =>{
     await expect(dropdownMenu).toHaveValue("2"); // Assuming "2" is the value attribute for Option 2
     })
 
-test('javascript alert buttons', async({page}) =>{
-    await page.getByRole('link', {name: 'JavaScript Alerts'}).click()
-
-    // Click the button
-    await page.getByRole('button',{name: 'Click for JS Alert'}).click()
-
-    // Give a short wait to ensure the page registers the button click
-    await page.waitForTimeout(500); 
-
-    //dialog is an event handler. 
-    page.once('dialog', async (dialog) => {
-        console.log(`Dialog message: ${dialog.message()}`); // Log message for debugging
-        await dialog.accept(); // Accept the alert
-    });
-
-    // Verify the result text is updated
-    await expect(page.locator('#result')).toHaveText('You successfully clicked an alert');
-    
-    
-    //await page.getByRole('button',{name: 'Click for JS Confirm'}).click()
-
-
-    //await page.getByRole('button',{name: 'Click for JS Prompt'}).click()
-
-
-}) 
-})
+   
+});

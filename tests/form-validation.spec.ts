@@ -2,7 +2,15 @@ import { test, expect } from '@playwright/test';
 import path from 'path'; // Import path module
 import fs from 'fs';
 
-test.describe('rc-suite3', () =>{ 
+//TESTS TO BE DONE
+// Forgot Password X
+// Form Authentication
+// Sign-up Form
+// Form Validation Errors
+// Textarea Input
+// Auto-complete Fields
+
+test.describe('form validation', () =>{ 
   
     test.beforeEach(async ({page}) => {
 

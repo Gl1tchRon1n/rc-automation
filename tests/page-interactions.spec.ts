@@ -1,63 +1,24 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('rc-suite1', () =>{ 
+
+//TESTS TO BE DONE
+// Auto Wait X
+// Dialog Alert Button
+// Modals & Popups
+// Frames & Iframes
+// Navigation & Redirects
+// Dynamic Content
+// Lazy Loading
+
+test.describe('page interactions', () =>{ 
   
       test.beforeEach(async ({page}) => {
 
       page.goto('http://www.uitestingplayground.com/');
-
       
     })
 
 
-test('Button Click', async ({ page }) => {
-
-  await page.getByRole('link', {name: "Visibility"}).click();
-
-  const hideButton = page.getByRole('button', {name: "Hide"});
-
-  await hideButton.click();
-
-  await expect(hideButton).toHaveText('Hide');
-
- 
-
-});
-
-
-test('Visibility Hidden', async ({ page }) => {
-
-  await page.getByRole('link', {name: "Visibility"}).click();
-
-    const visButton = page.getByRole('button', {name: "Visibility Hidden"});
-  
-    await visButton.click({force:true});
-
-
-});
-
-test('Input Fields', async ({page}) =>{
-  const inputField = await page.getByPlaceholder('MyButton')
-
-  await page.getByRole('link', {name: "Text Input"}).click();
-  await inputField.fill("Wassup G");
-  await inputField.clear();
-  await inputField.pressSequentially('Te Amo', {delay: 500})
-
-  const inputValue = await inputField.inputValue()
-  expect(inputValue).toEqual('Te Amo');
-})
-
-test('Extracting Values', async ({ page }) => {
-
-  await page.getByRole('link', {name: "Visibility"}).click();
-
-  const hideButton = page.getByRole('button', {name: "Hide"});
-
-  const buttonText = await hideButton.textContent(); 
-
-  expect(buttonText).toEqual("Hide"); //toEqual is a generic assertion that only goes with certain objects
-})
 
 test('Auto Wait Functionality Test', async ({page}) =>{
 
