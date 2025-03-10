@@ -1,4 +1,6 @@
 import { test, expect } from '@playwright/test';
+import fs from 'fs';
+
 
 test.setTimeout(30000);
 
@@ -6,10 +8,10 @@ test.setTimeout(30000);
 // Dropdown X
 // Checkboxes X
 // Input Field X
-// Sliders
+// Slider X
+// Basic Auth X
 // File Upload
-// Date Picker
-// Tooltips
+// Key Presses
 
 test.describe('ui elements', () =>{ 
   
@@ -108,6 +110,36 @@ test.describe('ui elements', () =>{
 
     // Step 6: Assert that "Option 2" is selected
     await expect(dropdownMenu).toHaveValue("2"); // Assuming "2" is the value attribute for Option 2
+    })
+
+    test('file upload', async({page})=>{
+
+    // Generate a test image dynamically
+    const imgBuffer = Buffer.from(
+        'iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAA' +
+        'HElEQVR42mNgGAWjYBSMglEwCYoI5YABBgAFAH+cGQiWAAAAAElFTkSuQmCC',
+        'base64'
+    );
+    fs.writeFileSync('test-image.png', imgBuffer);
+
+    // Navigate to the file upload page
+    await page.getByRole('link', {name: "File Upload"}).click()
+
+    // Upload the generated image
+    const fileChooserPromise = page.waitForEvent('filechooser');
+    await page.locator('input[type="file"]').first().click();
+    const fileChooser = await fileChooserPromise;
+    await fileChooser.setFiles('test-image.png');
+
+    // Click the upload button
+    await page.locator('#file-submit').click();
+
+    // Assert that the uploaded file name appears
+    await expect(page.locator('#uploaded-files')).toHaveText('test-image.png');
+
+    // Clean up (optional)
+    fs.unlinkSync('test-image.png');
+
     })
 
    
