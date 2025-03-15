@@ -10,7 +10,7 @@ test.setTimeout(30000);
 // Input Field X
 // Slider X
 // Basic Auth X
-// File Upload
+// File Upload X
 // Key Presses
 
 test.describe('ui elements', () =>{ 
@@ -142,5 +142,35 @@ test.describe('ui elements', () =>{
 
     })
 
-   
+    test('key presses', async({page})=>{
+
+    // Navigate to the Key Presses page
+    await page.getByRole('link', { name: "Key Presses" }).click();
+   // Remove unnecessary links that might get triggered
+   await page.evaluate(() => {
+    document.querySelector('a[href="http://elementalselenium.com/"]')?.remove();
+    document.querySelector('.github-fork-ribbon')?.remove();
+});
+
+    // Block unwanted popups
+    page.on('popup', async (popup) => {
+    console.log(`Blocked unexpected tab: ${popup.url()}`);
+    await popup.close();
+});
+
+    // Ensure the input field is in focus
+    const inputField = page.locator('#target');
+    await inputField.focus();
+
+    // Press keys and verify output
+    await page.keyboard.press('Tab');
+    await expect(page.locator('#result')).toHaveText('You entered: TAB');
+
+    await page.keyboard.press('Enter');
+    await expect(page.locator('#result')).toHaveText('You entered: ENTER');
+
+    // Ensure we remain on the same page
+    await expect(page).toHaveURL('https://the-internet.herokuapp.com/key_presses');
+    })
+       
 });
