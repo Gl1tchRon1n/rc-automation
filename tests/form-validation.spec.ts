@@ -6,12 +6,12 @@ import fs from 'fs';
 // Forgot Password ✅
 // File Upload ✅
 // Form Authentication ✅
-// Input Field Validation (e.g., input filled, cleared, required) 
-// Dropdown Selection Validation 
-// Key Presses Handling (assert key result text) 
-// Form Submission with Blank Inputs 
-// Error Handling: Invalid Input Format (e.g., numbers in username) 
-// Error Message Visibility Assertions 
+// Input Field Validation (e.g., input filled, cleared, required) ✅
+// Dropdown Selection Validation ✅
+// Key Presses Handling (assert key result text) ✅
+// Form Submission with Blank Inputs ✅
+// Error Handling: Invalid Input Format (e.g., numbers in username) ✅
+// Error Message Visibility Assertions ✅
 // Successful Form Submission Flow 
 
 test.describe('form validation', () =>{ 
@@ -118,5 +118,94 @@ test('input field', async({page})=>{
   // Assert success after login
   await expect(page.getByRole('heading', { name: /Welcome to the Secure Area/i })).toBeVisible();
 
+});
+
+test('Dropdown Selection Validation', async({page})=>{
+  await page.getByText('Dropdown').click();
+  const dropdown = page.locator('#dropdown');
+  await dropdown.selectOption('1'); // Select option 1
+  await expect(dropdown).toHaveValue('1'); // Assert selected value is '1'
+  await dropdown.selectOption('2'); // Select option 2
+  await expect(dropdown).toHaveValue('2'); // Assert selected value is '2'
+  await dropdown.selectOption(''); // Deselect all options
+  
+});
+
+test('dropdown selection', async({page})=>{
+  await page.getByText('Dropdown').click();
+  const dropdown = page.locator('#dropdown');
+  await dropdown.selectOption('1'); // Select option 1
+  await expect(dropdown).toHaveValue('1'); // Assert selected value is '1'
+  await dropdown.selectOption('2'); // Select option 2
+  await expect(dropdown).toHaveValue('2'); // Assert selected value is '2'
+  await dropdown.selectOption(''); // Deselect all options
+});
+
+test('Key Presses Handling', async({page})=>{
+  await page.getByText('Key Presses').click();
+  const inputField = page.locator('#target');
+  await inputField.fill(''); // Clear any existing text
+  await inputField.type('A'); // Type 'A' into the input field
+  const resultText = page.locator('#result'); // Locate the result text element
+  await expect(resultText).toHaveText('You entered: A'); // Assert the result text is as expected
+});
+
+test('Form Submission with Blank Inputs', async({page})=>{
+  await page.getByText('Form Authentication').click();   
+
+  const usernameField = page.getByLabel('Username');
+  const passwordField = page.getByLabel('Password');
+  const loginButton = page.getByRole('button', { name: 'Login' });
+
+  // Test required fields: click login without filling anything
+  await loginButton.click();
+
+  // Assert error message is visible
+  await expect(page.locator('#flash')).toContainText('Your username is invalid!');
+});
+test('Error Handling: Invalid Input Format', async({page})=>{
+  await page.getByText('Form Authentication').click();   
+
+  const usernameField = page.getByLabel('Username');
+  const passwordField = page.getByLabel('Password');
+  const loginButton = page.getByRole('button', { name: 'Login' });
+
+  // Fill in invalid username format (numbers only)
+  await usernameField.fill('1234567890');
+  await passwordField.fill('SuperSecretPassword!');
+  await loginButton.click();
+
+  // Assert error message is visible
+  await expect(page.locator('#flash')).toContainText('Your username is invalid!');
+});
+test('Error Message Visibility Assertions', async({page})=>{
+  await page.getByText('Form Authentication').click();   
+
+  const usernameField = page.getByLabel('Username');
+  const passwordField = page.getByLabel('Password');
+  const loginButton = page.getByRole('button', { name: 'Login' });
+
+  // Fill in invalid username format (numbers only)
+  await usernameField.fill('1234567890');
+  await passwordField.fill('SuperSecretPassword!');
+  await loginButton.click();
+
+  // Assert error message is visible
+  await expect(page.locator('#flash')).toContainText('Your username is invalid!');
+});
+test('Successful Form Submission Flow', async({page})=>{
+  await page.getByText('Form Authentication').click();   
+
+  const usernameField = page.getByLabel('Username');
+  const passwordField = page.getByLabel('Password');
+  const loginButton = page.getByRole('button', { name: 'Login' });
+
+  // Fill in valid credentials
+  await usernameField.fill('tomsmith');
+  await passwordField.fill('SuperSecretPassword!');
+  await loginButton.click();
+
+  // Assert successful login by checking for a specific element or text
+  await expect(page.getByText('Welcome to the Secure Area')).toBeVisible();
 });
 })
